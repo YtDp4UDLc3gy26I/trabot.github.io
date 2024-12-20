@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monetag Mini App</title>
+  <style>
+    body {
+      background-color: #1b103d;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #2e2a5a;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    button {
+      background-color: #8b1f5e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin: 10px 0;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #a2266b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Monetag Mini App</h1>
+    <p>Watch ads and earn points!</p>
+    <div style="margin: 20px;">
+      <h2>Progress: <span id="progress">0%</span></h2>
+    </div>
+    <button onclick="watchAd()">Watch Ad</button>
+    <button onclick="autoWatchAds()">Auto Watch Ads</button>
+    <button onclick="stopAutoAds()">Stop Auto Ads</button>
+    <button onclick="withdraw()">Withdraw Points</button>
+  </div>
+
+  <!-- Add Monetag Ad Script -->
+  <script src="https://niphaumeenses.net/vignette.min.js" data-zone="8680953" data-sdk="show_8680953"></script>
+
+  <script>
+    let progress = 0;
+    let autoAdInterval = null;
+
+    // Function to handle watching ads
+    function watchAd() {
+      // Check if the script and the function are loaded
+      if (typeof show_8680953 === 'function') {
+        show_8680953()
+          .then(() => {
+            // Logic after ad is successfully watched
+            alert('You have watched an ad!');
+            progress += 10; // Increment progress
+            if (progress > 100) progress = 100; // Cap progress at 100%
+            document.getElementById('progress').innerText = `${progress}%`;
+          })
+          .catch((error) => {
+            // Handle cases where the ad could not be shown or the user skipped it
+            console.error('Ad was not completed:', error);
+            alert('Ad could not be shown or was skipped.');
+          });
+      } else {
+        alert('Ad function not available.');
+      }
+    }
+
+    // Function to handle auto-watching ads at regular intervals
+    function autoWatchAds() {
+      // If auto ad watching is already in progress, stop it
+      if (autoAdInterval) {
+        alert('Auto watching is already active!');
+      } else {
+        // Start auto ad watching every 10 seconds
+        autoAdInterval = setInterval(watchAd, 10000);
+        alert('Auto watching ads every 10 seconds!');
+      }
+    }
+
+    // Function to stop auto-watching ads
+    function stopAutoAds() {
+      if (autoAdInterval) {
+        clearInterval(autoAdInterval);
+        autoAdInterval = null;
+        alert('Auto watching has been stopped.');
+      } else {
+        alert('Auto watching is not active.');
+      }
+    }
+
+    // Function to handle withdrawals
+    function withdraw() {
+      alert('Requesting withdrawal...');
+      // Backend logic for withdrawal
+    }
+  </script>
+</body>
+</html>
